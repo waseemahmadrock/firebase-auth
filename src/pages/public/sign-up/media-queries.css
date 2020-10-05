@@ -1,0 +1,28 @@
+@media (max-width: 750px) {
+    .rainbow-auth-firebase-signup_card {
+        width: 600px;
+    }
+}
+
+@media (max-width: 620px) {
+    .rainbow-auth-firebase-signup_container {
+        height: 100%;
+        padding-top: 96px;
+    }
+    .rainbow-auth-firebase-signup_card {
+        width: 100%;
+        border-radius: 0;
+        padding: 20px;
+        -webkit-flex-direction: column;
+        flex-direction: column;
+    }
+    .rainbow-auth-firebase-signup_inputs-container {
+        border-left: 0;
+        padding-left: 0;
+        width: 100%;
+    }
+    .rainbow-auth-firebase-signup_header {
+        font-size: 20px;
+        margin: 8px 0 12px 0;
+    }
+}

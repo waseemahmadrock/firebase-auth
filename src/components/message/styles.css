@@ -1,0 +1,49 @@
+.rainbow-auth-firebase-message_container {
+    padding: 16px;
+    width: 100vw;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    z-index: 999999;
+    transform: translateY(-101%);
+    transition: transform 250ms linear, opacity 250ms linear;
+}
+
+.rainbow-auth-firebase-message_container-error {
+    background-color: #fe4849;
+}
+
+.rainbow-auth-firebase-message_container-success {
+    background-color: #1de9b6;
+}
+
+.rainbow-auth-firebase-message_content {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    width: 980px;
+}
+
+.rainbow-auth-firebase-message_text {
+    color: #ffffff;
+    padding: 0 16px;
+    font-size: 16px;
+    font-weight: 500;
+    flex-grow: 1;
+}
+
+.rainbow-auth-firebase-message_icon, .rainbow-auth-firebase-message_close-button {
+    flex-shrink: 0;
+}
+
+.rainbow-auth-firebase-message_container--shown {
+    transform: translateY(0%);
+}

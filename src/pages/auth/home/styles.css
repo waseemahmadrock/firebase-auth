@@ -1,0 +1,15 @@
+.rainbow-auth-firebase-auth_container {
+    background-color: #f4f6f9;
+    height: calc(100vh - 76px);
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    margin-top: 76px;
+}
+
+.rainbow-auth-firebase-auth_title {
+    margin: 119px auto auto;
+    font-size: 30px;
+    text-align: center;
+}

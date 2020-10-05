@@ -1,0 +1,84 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:11.10.1-stretch-browsers
+      
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: yarn install
+      - run: yarn cypress install  ## If there is a binary already present, it should finish quickly.
+
+      - save_cache:
+          key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - ~/.cache  ## cache both yarn and Cypress!
+
+      - run: yarn lint
+
+      # run tests!
+      - run: yarn test
+      - run:
+          command: yarn start
+          background: true
+      - run: sleep 60
+      - run: yarn cypress:run
+
+  deploy_firebase:
+    docker:
+      - image: circleci/node:11.10.1-stretch-browsers
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "yarn.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run:
+            name: Create .env file
+            command: |
+                touch .env;
+                echo REACT_APP_FIREBASE_APIKEY=$REACT_APP_FIREBASE_APIKEY >> .env;
+                echo REACT_APP_FIREBASE_AUTH_DOMAIN=$REACT_APP_FIREBASE_AUTH_DOMAIN >> .env;
+                echo REACT_APP_FIREBASE_DATABASE_URL=$REACT_APP_FIREBASE_DATABASE_URL >> .env;
+                echo REACT_APP_FIREBASE_PROJECT_ID=$REACT_APP_FIREBASE_PROJECT_ID >> .env;
+                echo REACT_APP_FIREBASE_MESSAGING_SENDERID=$REACT_APP_FIREBASE_MESSAGING_SENDERID >> .env;
+      - run: yarn install
+      - run: yarn deploy --token=$FIREBASE_TOKEN      
+      
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
+      - deploy_firebase:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
